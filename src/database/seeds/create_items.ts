@@ -3,10 +3,10 @@ import {Knex} from "knex";
 
 export async function seed(knex: Knex) {
     await knex('items').insert([
-        { titulo: "Papeis e papelao", imagem: "papel_png" },
-        { titulo: "Vidros e lampdas", imagem: "vidros_png" },
-        { titulo: "Oleo de cozinha", imagem: "oleo_png" },
-        { titulo: "Baterias e pilhas", imagem: "bateria_png" },
+        { titulo: "Produto 01", imagem: "01.png" },
+        { titulo: "Produto 02", imagem: "02.png" },
+        { titulo: "Produto 03", imagem: "03.png" },
+        { titulo: "Produto 04", imagem: "04.png" },
         ]
     );
 }
