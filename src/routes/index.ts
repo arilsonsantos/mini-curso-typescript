@@ -1,4 +1,5 @@
 import { Router } from "express";
+import itemsRoute from "./items.route";
 
 const routes = Router();
 
@@ -7,5 +8,7 @@ routes.get('/', (req, res) => {
         message: "Olá dev!"
     })
 });
+
+routes.use('/items', itemsRoute);
 
 export default routes;
