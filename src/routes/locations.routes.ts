@@ -25,7 +25,9 @@ locationsRoute.post('/', async (req, res) => {
         longitude
     };
 
-    const newIds = await knex('locations').insert(location);
+    const transaction = await knex.transaction();
+
+    const newIds = await transaction('locations').insert(location);
 
     const locationId = newIds[0];
 
@@ -36,7 +38,9 @@ locationsRoute.post('/', async (req, res) => {
         }
     })
 
-    await knex('locations_items').insert(locationItems)
+    await transaction('locations_items').insert(locationItems)
+
+    transaction.commit();
 
     return res.json({
         id: locationId,
