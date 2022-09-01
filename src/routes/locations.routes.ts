@@ -29,12 +29,12 @@ locationsRoute.post('/', async (req, res) => {
 
     const newIds = await transaction('locations').insert(location);
 
-    const locationId = newIds[0];
+    const location_id = newIds[0];
 
-    const locationItems = items.map((i: number) => {
+    const locationItems = items.map((item_id: number) => {
         return {
-            item_id: i,
-            location_id: locationId
+            item_id,
+            location_id
         }
     })
 
@@ -43,7 +43,7 @@ locationsRoute.post('/', async (req, res) => {
     transaction.commit();
 
     return res.json({
-        id: locationId,
+        id: location_id,
         ... location
     });
 
