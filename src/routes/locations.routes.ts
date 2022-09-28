@@ -1,4 +1,4 @@
-import { response, Router } from "express";
+import { Router } from "express";
 import knex from "../database/connection";
 
 const locationsRoute = Router();
@@ -28,25 +28,14 @@ type ReturnLocation = {
 
 
 async function createLocation(req: RequestLocation): Promise<ReturnLocation> {
-    const {
-        nome,
-        imagem,
-        email,
-        cidade,
-        uf,
-        latitude,
-        longitude,
-        items
-    } = req;
-
      const location = {
-        nome,
+        nome: req.nome,
         imagem: "fake_imagem.png",
-        email,
-        cidade,
-        uf,
-        latitude,
-        longitude
+        email: req.email,
+        cidade: req.cidade,
+        uf: req.uf,
+        latitude: req.latitude,
+        longitude: req.longitude
     };
 
     const transaction = await knex.transaction();
@@ -55,10 +44,10 @@ async function createLocation(req: RequestLocation): Promise<ReturnLocation> {
 
     const location_id = newIds[0];
 
-    const countItems = await transaction('items').whereIn('id', items);
+    const countItems = await transaction('items').whereIn('id', req.items);
 
-    if(countItems.length === items.length) {
-        const locationItems = items.map((item_id: number) => {
+    if(countItems.length === req.items.length) {
+        const locationItems = req.items.map((item_id: number) => {
             return {
                 item_id,
                 location_id
