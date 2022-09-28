@@ -31,21 +31,33 @@ locationsRoute.post('/', async (req, res) => {
 
     const location_id = newIds[0];
 
-    const locationItems = items.map((item_id: number) => {
+    const locationItems = await Promise.all(items.map(async (item_id: number) => {
+        const selectedItem = await transaction('items').where('id', item_id).first();
+
+        if (!selectedItem) {
+            return false
+        }
+
         return {
             item_id,
             location_id
         }
-    })
+    }))
 
-    await transaction('locations_items').insert(locationItems)
 
-    transaction.commit();
+    
 
-    return res.json({
-        id: location_id,
-        ... location
-    });
+    if(locationItems[0]) {
+        await transaction('locations_items').insert(locationItems)
+        await transaction.commit();
+        return res.json({
+            id: location_id,
+            ... location
+        });
+    } else {
+        await transaction.rollback();
+        return res.status(400).json({ message: 'Items not found' });
+    }
 
 });
 
