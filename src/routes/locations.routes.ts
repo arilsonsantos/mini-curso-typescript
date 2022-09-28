@@ -3,7 +3,31 @@ import knex from "../database/connection";
 
 const locationsRoute = Router();
 
-locationsRoute.post('/', async (req, res) => {
+type RequestLocation = {
+    nome: string;
+    imagem: string;
+    email: string;
+    cidade: string;
+    uf: string;
+    latitude: number;
+    longitude: number;
+    items: number[];
+};
+
+type ReturnLocation = {
+    id: number,
+    nome: string;
+    imagem: string;
+    email: string;
+    cidade: string;
+    uf: string;
+    latitude: number;
+    longitude: number;    
+    message: string;
+}
+
+
+async function createLocation(req: RequestLocation): Promise<ReturnLocation> {
     const {
         nome,
         imagem,
@@ -13,7 +37,7 @@ locationsRoute.post('/', async (req, res) => {
         latitude,
         longitude,
         items
-    } = req.body;
+    } = req;
 
      const location = {
         nome,
@@ -31,34 +55,51 @@ locationsRoute.post('/', async (req, res) => {
 
     const location_id = newIds[0];
 
-    const locationItems = await Promise.all(items.map(async (item_id: number) => {
-        const selectedItem = await transaction('items').where('id', item_id).first();
+    const countItems = await transaction('items').whereIn('id', items);
 
-        if (!selectedItem) {
-            return false
-        }
-
-        return {
-            item_id,
-            location_id
-        }
-    }))
-
-
-    
-
-    if(locationItems[0]) {
+    if(countItems.length === items.length) {
+        const locationItems = items.map((item_id: number) => {
+            return {
+                item_id,
+                location_id
+            }
+        })
         await transaction('locations_items').insert(locationItems)
         await transaction.commit();
-        return res.json({
+        return {
             id: location_id,
-            ... location
-        });
-    } else {
+            ... location,
+            message: "Location created successfully"
+        };        
+    }else{ 
         await transaction.rollback();
-        return res.status(400).json({ message: 'Items not found' });
-    }
+        return {
+            message: "Error: Some items do not exist"
+        } as ReturnLocation;
+    }        
+}
 
+async function getLocations(): Promise<ReturnLocation[]> {
+    const locations = await knex('locations').select('*');
+    return locations;
+}
+
+async function getLocation(id: number): Promise<ReturnLocation> {
+    const location = await knex('locations').where('id', id).first();
+    return location;
+}
+
+locationsRoute.post('/', async (req, res) => {
+    return res.json(await createLocation(req.body));
+});
+
+locationsRoute.get('/', async (req, res) => {
+    return res.json(await getLocations());
+});
+
+locationsRoute.get('/:id', async (req, res) => {
+    const { id } = req.params;
+    return res.json(await getLocation(Number(id)));
 });
 
 export default locationsRoute;
