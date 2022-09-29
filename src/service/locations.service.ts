@@ -83,13 +83,22 @@ export async function getLocation(id: number): Promise<ReturnLocation> {
 export async function getLocationItems(id: number): Promise<ReturnLocation> {
     const location = await knex('locations').where('id', id).first();
 
-    const items1 = await knex('items')
+    const itemsTitulos = await knex('items')
         .join('locations_items', 'item_id', '=', 'items.id')
         .where('locations_items.location_id', id)
         .select('items.titulo');
 
-    location.items = items1;
+    location.items = itemsTitulos;
     return location;
+}
+
+export async function getLocationByItems(itemsId: number[]): Promise<ReturnLocation[]> {
+    const locations = await knex('locations')
+        .join('locations_items', 'location_id', '=', 'locations.id')
+        .whereIn('locations_items.item_id', itemsId)
+        .select('locations.*');
+    
+    return locations;
 }
 
 export async function deletetLocation(id: number): Promise<Number> {

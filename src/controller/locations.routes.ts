@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createLocation, deletetLocation, getLocation, getLocationItems, getLocations } from "../service/locations.service";
+import { createLocation, deletetLocation, getLocation, getLocationByItems, getLocationItems, getLocations } from "../service/locations.service";
 
 
 const locationsRoute = Router();
@@ -9,6 +9,13 @@ locationsRoute.post('/', async (req, res) => {
 });
 
 locationsRoute.get('/', async (req, res) => {
+    let { items }  = req.query;
+
+    if (items != null){
+        let parseItems = <any> String(items).split(',').map(item => Number(item.trim()));
+        return res.json(await getLocationByItems(parseItems));
+    }
+    
     return res.json(await getLocations());
 });
 
