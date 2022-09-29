@@ -22,7 +22,7 @@ locationsRoute.get('/', async (req, res) => {
     let { items }  = req.query;
 
     if (items != null){
-        let parseItems = <any> String(items).split(',').map(item => Number(item.trim()));
+        let parseItems = String(items).split(',').map(item => Number(item.trim()));
         return res.json(await getLocationByItems(parseItems));
     }
     
