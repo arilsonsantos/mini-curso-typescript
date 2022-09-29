@@ -21,7 +21,9 @@ export type ReturnLocation = {
     latitude: number;
     longitude: number;    
     message: string;
+    itemsName?: string[];
 }
+
 
 
 export async function createLocation(req: RequestLocation): Promise<ReturnLocation> {
@@ -75,6 +77,18 @@ export async function getLocations(): Promise<ReturnLocation[]> {
 
 export async function getLocation(id: number): Promise<ReturnLocation> {
     const location = await knex('locations').where('id', id).first();
+    return location;
+}
+
+export async function getLocationItems(id: number): Promise<ReturnLocation> {
+    const location = await knex('locations').where('id', id).first();
+
+    const items1 = await knex('items')
+        .join('locations_items', 'item_id', '=', 'items.id')
+        .where('locations_items.location_id', id)
+        .select('items.titulo');
+
+    location.items = items1;
     return location;
 }
 

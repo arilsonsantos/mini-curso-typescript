@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createLocation, deletetLocation, getLocation, getLocations } from "../service/locations.service";
+import { createLocation, deletetLocation, getLocation, getLocationItems, getLocations } from "../service/locations.service";
 
 
 const locationsRoute = Router();
@@ -15,6 +15,11 @@ locationsRoute.get('/', async (req, res) => {
 locationsRoute.get('/:id', async (req, res) => {
     const { id } = req.params;
     return res.json(await getLocation(Number(id)));
+});
+
+locationsRoute.get('/:id/items', async (req, res) => {
+    const { id } = req.params;
+    return res.json(await getLocationItems(Number(id)));
 });
 
 locationsRoute.delete('/:id', async (req, res) => {
