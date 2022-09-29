@@ -1,11 +1,21 @@
 import { Router } from "express";
-import { createLocation, deletetLocation, getLocation, getLocationByItems, getLocationItems, getLocations } from "../service/locations.service";
+import { createLocation, deletetLocation, getLocation, getLocationByItems, getLocationItems, getLocations, updateLocation } from "../service/locations.service";
+import multer from "multer";
+import multerConfig from '../config/multer';
 
+const upload =  multer(multerConfig);
 
 const locationsRoute = Router();
 
 locationsRoute.post('/', async (req, res) => {
     return res.json(await createLocation(req.body));
+});
+
+locationsRoute.put('/:id', upload.single('imagem'), async (req, res) => {
+    const id  = Number(req.params.id);
+    const filename = String(req.file?.filename);
+
+    return res.json(await updateLocation(id, filename));
 });
 
 locationsRoute.get('/', async (req, res) => {

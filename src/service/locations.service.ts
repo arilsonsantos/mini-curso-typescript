@@ -1,5 +1,6 @@
 import knex from "../database/connection";
 
+
 export type RequestLocation = {
     nome: string;
     imagem: string;
@@ -27,15 +28,8 @@ export type ReturnLocation = {
 
 
 export async function createLocation(req: RequestLocation): Promise<ReturnLocation> {
-     const location = {
-        nome: req.nome,
-        imagem: "fake_imagem.png",
-        email: req.email,
-        cidade: req.cidade,
-        uf: req.uf,
-        latitude: req.latitude,
-        longitude: req.longitude
-    };
+     const location = req;
+     location.imagem = 'fake_imagem.png';
 
     const transaction = await knex.transaction();
 
@@ -78,6 +72,19 @@ export async function getLocations(): Promise<ReturnLocation[]> {
 export async function getLocation(id: number): Promise<ReturnLocation> {
     const location = await knex('locations').where('id', id).first();
     return location;
+}
+
+export async function updateLocation(id: number, fileName: string): Promise<ReturnLocation> {
+    const location = await knex('locations').where('id', id).first();
+
+    const locationUpdated = {
+        ...location,
+        imagem: fileName
+    };
+
+    await knex('locations').update(locationUpdated).where('id', id);
+
+    return locationUpdated;
 }
 
 export async function getLocationItems(id: number): Promise<ReturnLocation> {
