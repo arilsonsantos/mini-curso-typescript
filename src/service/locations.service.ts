@@ -28,8 +28,17 @@ export type ReturnLocation = {
 
 
 export async function createLocation(req: RequestLocation): Promise<ReturnLocation> {
-     const location = req;
-     location.imagem = 'fake_imagem.png';
+    const location = {
+        nome: req.nome,
+        imagem: "fake_imagem.png",
+        email: req.email,
+        cidade: req.cidade,
+        uf: req.uf,
+        latitude: req.latitude,
+        longitude: req.longitude
+    };
+
+    location.imagem = 'fake_imagem.png';
 
     const transaction = await knex.transaction();
 
