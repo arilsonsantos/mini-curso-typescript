@@ -1,0 +1,178 @@
+{
+	"info": {
+		"_postman_id": "0a27235b-dd2d-41c5-a7f8-9388f96524cf",
+		"name": "Mini Curso Type Script",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1816335"
+	},
+	"item": [
+		{
+			"name": "Locations and items",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3333/locations/76/items",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"locations",
+						"76",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put imagem",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "imagem",
+							"type": "file",
+							"src": "/Users/arilsonsantos/Desktop/pessoal/fotos/IMG_0003.jpeg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3333/locations/40",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"locations",
+						"40"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Locations by Items",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3333/locations?items=501",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"locations"
+					],
+					"query": [
+						{
+							"key": "items",
+							"value": "501"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3333/locations/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"locations",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Locations",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"nome\":\"Joao\",\n        \"email\":\"joao@email.com\",\n        \"cidade\":\"Eunapolis\",\n        \"uf\":\"BA\",\n        \"latitud\":\"450089911\",\n        \"longitud\":\"-120000\",\n        \"items\":[1,2, 3, 4]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/locations",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"locations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Items",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3333/items",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Items",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3333/items",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
